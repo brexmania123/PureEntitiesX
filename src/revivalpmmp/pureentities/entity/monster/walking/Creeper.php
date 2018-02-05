@@ -63,13 +63,9 @@ class Creeper extends WalkingMonster implements Explosive{
 
 	public function loadFromNBT(){
 		if(PluginConfiguration::getInstance()->getEnableNBT()){
-			if(isset($this->namedtag->powered)){
-				$this->powered = $this->namedtag->powered;
-			}
-
-			if(isset($this->namedtag->BombTime)){
-				$this->bombTime = (int) $this->namedtag["BombTime"];
-			}
+			if(isset($this->namedtag->powered)) {
+                $this->powered = $this->namedtag->powered;
+            }
 
 			$this->setPowered($this->powered);
 		}
@@ -79,7 +75,6 @@ class Creeper extends WalkingMonster implements Explosive{
 		if(PluginConfiguration::getInstance()->getEnableNBT()){
 			parent::saveNBT();
 			$this->namedtag->powered = new IntTag("powered", $this->powered);
-			$this->namedtag->BombTime = new IntTag("BombTime", $this->bombTime);
 		}
 	}
 
@@ -97,8 +92,8 @@ class Creeper extends WalkingMonster implements Explosive{
 				$explosion->explodeA();
 			}
 			$explosion->explodeB();
-			$this->close();
 		}
+        $this->flagForDespawn();
 	}
 
 	public function onUpdate(int $currentTick) : bool{
